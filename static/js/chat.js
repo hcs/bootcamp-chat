@@ -64,18 +64,18 @@ $(document).ready(function() {
                     .attr("id", "user-" + message.username)
                     .text(message.username));
                 messagebox.html("<h4>[" + msg_time + "] " + message.username
-                                + " entered!</h4>");
+                    + " entered!</h4>");
                 break;
             case MESSAGE_TYPES.LEAVE_USER:
                 // user has left--remove user name from currently online list
                 messagebox.html("<h4>[" + msg_time + "] " + message.username
-                                + " left!</h4>");
+                    + " left!</h4>");
                 $("#user-" + message.username).remove();
                 break;
             case MESSAGE_TYPES.MESSAGE:
                 // received plain old IM
                 messagebox.html("<h4>[" + msg_time + "] " + message.username
-                                + "</h4><p>" + message.text + "</p>");
+                    + "</h4><p>" + message.text + "</p>");
                 break;
             case MESSAGE_TYPES.ONLINE_USERS:
                 // update list with current users
