@@ -15,17 +15,17 @@ $(document).ready(function() {
     var ENTER_KEY = 13;
     var WS_URL = "ws://" + ChatApp.HOST + ":" + ChatApp.PORT + "/" + ChatApp.CHAT_URL
 
-    var usernamebox = $("#username");
-    var usernamebutton = $("#username-start");
-    var usernameactions = $("#username-actions");
-    var usernamespan = $("#username-prepend");
-    var userslist = $("#users-online");
+    var usernamebox = $("#username");               // input box for username
+    var usernamebutton = $("#username-start");      // enter chat button
+    var usernameactions = $("#username-actions");   // div containing username inputs
+    var usernamespan = $("#username-prepend");      // contains the submitted username
+    var userslist = $("#users-online");             // ul element containing users
 
-    var inputbox = $("#input");
-    var actionsbox = $("#actions");
-    var sendbutton = $("#send");
-    var messages = $("#messages");
-    var messagescontainer = $("#messages-container");
+    var inputbox = $("#input");                     // input box for messages
+    var actionsbox = $("#actions");                 // div containing message inputs
+    var sendbutton = $("#send");                    // send button
+    var messages = $("#messages");                  // ul element with all messages
+    var messagescontainer = $("#messages-container"); // div containing all messages
 
     // Returns the sanitized version of the input string.
     // See: http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript
@@ -52,7 +52,7 @@ $(document).ready(function() {
         };
         ws.send(JSON.stringify(message));
         console.log("closed web socket: " + WS_URL + ", message: " + msg);
-    }
+    };
     ws.onmessage = function(msg) {
         var messagebox = $("<div></div>");
         var msg_time = new Date(msg.timeStamp);
@@ -102,7 +102,7 @@ $(document).ready(function() {
                 console.log("unrecognized message type: " + msg);
         }
         messages.prepend($("<li></li>").addClass("divider"));
-    }
+    };
 
     // Close the socket connection when the window closes
     $(window).unload(function() {
