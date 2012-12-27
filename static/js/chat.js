@@ -26,6 +26,14 @@ $(document).ready(function() {
     var messages = $("#messages");
     var messagescontainer = $("#messages-container");
 
+    // Returns the sanitized version of the input string.
+    // See: http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+    };
+
     // Create a web socket to receive chat updates
     var WS_URL = "ws://" + ChatApp.HOST + ":" + ChatApp.PORT
                  + "/" + ChatApp.CHAT_URL
@@ -93,7 +101,7 @@ $(document).ready(function() {
 
     // Request username
     usernamebutton.click(function() {
-        var username = usernamebox.val();
+        var username = escapeHtml(usernamebox.val());
         if (username == "") {
             return false; // do nothing if nothing is provided
         }
@@ -119,7 +127,7 @@ $(document).ready(function() {
 
     // Add a click handler for send
     sendbutton.click(function() {
-        var text = inputbox.val();
+        var text = escapeHtml(inputbox.val());
         if (text == "") {
             return false; // do nothing if nothing is provided
         }
