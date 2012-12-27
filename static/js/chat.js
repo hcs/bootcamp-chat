@@ -63,19 +63,30 @@ $(document).ready(function() {
                 userslist.append($("<li></li>")
                     .attr("id", "user-" + message.username)
                     .text(message.username));
-                messagebox.html("<h4>[" + msg_time + "] " + message.username
-                    + " entered!</h4>");
+                messages.prepend($("<li></li>")
+                    .text(message.username + " entered!"));              
+                messages.prepend($("<li></li>")
+                    .addClass("nav-header")
+                    .text("[" + msg_time + "]"));
+                //messagebox.html("<h4>[" + msg_time + "] " + message.username
+                //    + " entered!</h4>");
                 break;
             case MESSAGE_TYPES.LEAVE_USER:
                 // user has left--remove user name from currently online list
-                messagebox.html("<h4>[" + msg_time + "] " + message.username
-                    + " left!</h4>");
                 $("#user-" + message.username).remove();
+                messages.prepend($("<li></li>")
+                    .text(message.username + " left!"));              
+                messages.prepend($("<li></li>")
+                    .addClass("nav-header")
+                    .text("[" + msg_time + "]"));
                 break;
             case MESSAGE_TYPES.MESSAGE:
                 // received plain old IM
-                messagebox.html("<h4>[" + msg_time + "] " + message.username
-                    + "</h4><p>" + message.text + "</p>");
+                messages.prepend($("<li></li>")
+                    .text(message.username + ": " + message.text));              
+                messages.prepend($("<li></li>")
+                    .addClass("nav-header")
+                    .text("[" + msg_time + "]"));
                 break;
             case MESSAGE_TYPES.ONLINE_USERS:
                 // update list with current users
@@ -92,10 +103,7 @@ $(document).ready(function() {
             default:
                 console.log("unrecognized message type: " + msg);
         }
-        listitem = $("<li></li>").append(messagebox);
-        horizontal = $("<li></li>").addClass("divider");
-        messages.prepend(listitem);
-        messages.prepend(horizontal);
+        messages.prepend($("<li></li>").addClass("divider"));
     }
 
     // Close the socket connection when the window closes
