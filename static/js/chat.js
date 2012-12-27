@@ -13,6 +13,7 @@ $(document).ready(function() {
 
     // useful constants
     var ENTER_KEY = 13;
+    var WS_URL = "ws://" + ChatApp.HOST + ":" + ChatApp.PORT + "/" + ChatApp.CHAT_URL
 
     var usernamebox = $("#username");
     var usernamebutton = $("#username-start");
@@ -34,9 +35,12 @@ $(document).ready(function() {
         return div.innerHTML;
     };
 
+    // Hide messages on default, focus on username input box
+    usernamebox.focus();
+    actionsbox.hide();
+    messagescontainer.hide();
+
     // Create a web socket to receive chat updates
-    var WS_URL = "ws://" + ChatApp.HOST + ":" + ChatApp.PORT
-                 + "/" + ChatApp.CHAT_URL
     var ws = new WebSocket(WS_URL);
     ws.onopen = function() {
         console.log("opened web socket: " + WS_URL);
@@ -50,7 +54,6 @@ $(document).ready(function() {
         console.log("closed web socket: " + WS_URL + ", message: " + msg);
     }
     ws.onmessage = function(msg) {
-        console.log(msg);
         var messagebox = $("<div></div>");
         var msg_time = new Date(msg.timeStamp);
         var message = JSON.parse(msg.data);
@@ -95,6 +98,7 @@ $(document).ready(function() {
         messages.prepend(horizontal);
     }
 
+    // Close the socket connection when the window closes
     $(window).unload(function() {
         ws.onclose();
     });
@@ -105,25 +109,23 @@ $(document).ready(function() {
         if (username == "") {
             return false; // do nothing if nothing is provided
         }
-        console.log(username);
+        USERNAME = username;
         var message = {
             type : MESSAGE_TYPES.NEW_USER,
             username : username,
         };
-        USERNAME = username;
         ws.send(JSON.stringify(message));
+
+        // hide the username box
         usernameactions.hide();
+
+        // show the IM prompt using the newly defined username
         usernamespan.text(USERNAME);
         actionsbox.show("fast");
         messagescontainer.show("fast");
         inputbox.focus();
         return false;
     });
-
-    // Hide boxes on default, focus on username
-    usernamebox.focus();
-    actionsbox.hide();
-    messagescontainer.hide();
 
     // Add a click handler for send
     sendbutton.click(function() {
@@ -132,7 +134,6 @@ $(document).ready(function() {
             return false; // do nothing if nothing is provided
         }
         inputbox.val(""); // clear the input box
-        console.log(text);
         var message = {
             type : MESSAGE_TYPES.MESSAGE,
             username : USERNAME,
@@ -142,7 +143,7 @@ $(document).ready(function() {
         return false;
     });
 
-    // Add a handler for when the enter key is pressed
+    // Add a handler for when the enter key is pressed while in IM box
     inputbox.keypress(function(e) {
         if (e.which == ENTER_KEY) {
             sendbutton.click();
