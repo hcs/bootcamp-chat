@@ -68,8 +68,6 @@ $(document).ready(function() {
                 messages.prepend($("<li></li>")
                     .addClass("nav-header")
                     .text("[" + msg_time + "]"));
-                //messagebox.html("<h4>[" + msg_time + "] " + message.username
-                //    + " entered!</h4>");
                 break;
             case MESSAGE_TYPES.LEAVE_USER:
                 // user has left--remove user name from currently online list
