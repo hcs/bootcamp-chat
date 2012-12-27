@@ -49,11 +49,11 @@ $(document).ready(function() {
         switch (message.type) {
             case MESSAGE_TYPES.NEW_USER:
                 // new user has joined--add user name to currently online list
-                messagebox.html("<h4>[" + msg_time + "] " + message.username
-                                + " entered!</h4>");
                 userslist.append($("<li></li>")
                     .attr("id", "user-" + message.username)
                     .text(message.username));
+                messagebox.html("<h4>[" + msg_time + "] " + message.username
+                                + " entered!</h4>");
                 break;
             case MESSAGE_TYPES.LEAVE_USER:
                 // user has left--remove user name from currently online list
@@ -68,7 +68,7 @@ $(document).ready(function() {
                 break;
             case MESSAGE_TYPES.ONLINE_USERS:
                 // update list with current users
-                userslist.html("");
+                userslist.html(""); // clear list
                 userslist.append($("<li></li>")
                     .addClass("nav-header")
                     .text("Online Now"));
@@ -79,7 +79,7 @@ $(document).ready(function() {
                 }
                 break;
             default:
-                console.log("unrecognized type: " + msg);
+                console.log("unrecognized message type: " + msg);
         }
         listitem = $("<li></li>").append(messagebox);
         horizontal = $("<li></li>").addClass("divider");
@@ -94,6 +94,9 @@ $(document).ready(function() {
     // Request username
     usernamebutton.click(function() {
         var username = usernamebox.val();
+        if (username == "") {
+            return false; // do nothing if nothing is provided
+        }
         console.log(username);
         var message = {
             type : MESSAGE_TYPES.NEW_USER,
@@ -117,6 +120,9 @@ $(document).ready(function() {
     // Add a click handler for send
     sendbutton.click(function() {
         var text = inputbox.val();
+        if (text == "") {
+            return false; // do nothing if nothing is provided
+        }
         inputbox.val(""); // clear the input box
         console.log(text);
         var message = {
